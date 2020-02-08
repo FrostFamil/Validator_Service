@@ -25,6 +25,7 @@ export default class Register extends Component {
       lastNameError: '',
       nicknameError: ''
     }
+
   }
 
   inputValidator=() => {
@@ -123,10 +124,12 @@ export default class Register extends Component {
               onBlur={() => this.inputValidator()}
             />
 
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.onSubmit()}
-              disabled={this.state.disabled}
+            <TouchableOpacity onPress={() => this.onSubmit()} disabled={this.state.disabled}
+              style={{backgroundColor: this.state.disabled ? '#686868':'#3CB371',
+                      height: 55,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: 200}}
             >
               <Text button>Save</Text>
             </TouchableOpacity>
@@ -168,14 +171,5 @@ const styles = StyleSheet.create({
   errorTextStyle: {
     fontSize: 15,
     color: 'red'
-  },
-  button: {
-    backgroundColor: '#3CB371',
-    borderRadius: 20,
-    height: 55,
-    paddingVertical: 11,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: width - 55
   }
 })
