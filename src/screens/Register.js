@@ -22,20 +22,23 @@ export default class Register extends Component {
 
     const { firstName, lastName, nickname, age, gender, country, address } = this.state;
 
-    if( firstName.length > 6 && lastName.length > 6 && nickname.length > 6){
+    if( firstName.length > 6 && lastName.length > 6){
+      if(nickname !== '' && nickname.length <= 6){
+        alert("Nickname should be at least 7 character long")
+      }else{
         registerEndPoint(firstName, lastName, nickname, age, gender, country, address).then(res => {
-            
+          
           if(res === undefined){
             alert('Age should be bigger then 18');
           }else{
             alert(res.message);
-          }
-                 
-        })
-    }else if( firstName === '' || lastName === '' || nickname === '' || age === '' || gender === '' || country === '' || address === '') {
+          }            
+          })
+      }
+    }else if( firstName === '' || lastName === '' || age === '' || gender === '' || country === '' || address === '') {
       alert('Please fill all fields correclty')
     }else{
-      alert ('First name, Last name, nickname should be at least 7 character long');
+      alert ('First name, Last name should be at least 7 character long');
     }
     
   }
