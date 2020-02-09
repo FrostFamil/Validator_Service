@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions,TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Block, Text, Input } from '../components';
 import registerEndPoint from '../endPoints/registerEndPoint';
+import { disableExpoCliLogging } from 'expo/build/logs/Logs';
 
 const { width } = Dimensions.get('screen');
 
@@ -30,24 +31,58 @@ export default class Register extends Component {
 
   inputValidator=() => {
     const {firstName, lastName, nickname, age, gender, country, address} = this.state;
+    let { firstNameValid, lastNameValid, ageValid, genderValid, countryValid, addressValid } = false;
+    let nicknameValid = true
 
-    if(firstName !== '' && lastName !== '' && age !== '' && gender !== '' && country !== '' && address !== ''){
-
-      if(firstName.length <= 6){
-        this.setState({firstNameError: 'FirstName should be at least 7 character long'})
+    if(firstName !== ''){
+      if(firstName === '' || (firstName !== '' && firstName.length <= 6)){
+        this.setState({firstNameError: "Firstname should be at least 7 Character"})
+        firstNameValid = false;
+      }else{
+        this.setState({ firstNameError: ''})
+        firstNameValid = true;
       }
-      else if(lastName.length <= 6){
-        this.setState({lastNameError: 'LastName should be at least 7 character long'})
-      }
-      else if(nickname !== '' && nickname.length <= 6){
-        this.setState({nicknameError: 'NickName should be at least 7 character long'})
-      }
-      else{
-        this.setState({firstNameError: '', lastNameError: '', nicknameError: '', disabled: false});
-      }
-    }else{
-      this.setState({ disabled: true })
     }
+
+    if(lastName !== ''){
+      if(lastName.length <= 6){
+        this.setState({lastNameError: "Lastname should be at least 7 Character"})
+        lastNameValid = false;
+      }else{
+        this.setState({ lastNameError: ''})
+        lastNameValid = true;
+      }
+    }
+
+    if(nickname !== '' && nickname.length <= 6){
+      this.setState({nicknameError: "Nickname should be at least 7 Character"})
+      nicknameValid = false;
+    }else{
+      this.setState({ nicknameError: ''})
+    }
+
+    if(age !== ''){
+      ageValid = true;      
+    }
+
+    if(gender !== ''){
+      genderValid = true;
+    }
+
+    if(country !== ''){
+      countryValid = true;
+    }
+
+    if(address !== ''){
+      addressValid = true;
+    }
+
+    if(firstNameValid && lastNameValid && nicknameValid && ageValid && genderValid && countryValid && addressValid ){
+      this.setState({disabled: false});
+    }else{
+      this.setState({ disabled: true });
+    }
+    
   }
 
   onSubmit = () => {
@@ -70,7 +105,7 @@ export default class Register extends Component {
             <Input
               full
               minLength={7}
-              label="First name"
+              label="First name*"
               style={{ marginBottom: 17 }}
               onChangeText={(text) => this.setState({ firstName: text})}
               onBlur={() => this.inputValidator()}
@@ -79,7 +114,7 @@ export default class Register extends Component {
             <Input
               full
               minLength={7}
-              label="Last name"
+              label="Last name*"
               style={{ marginBottom: 17 }}
               onChangeText={(text) => this.setState({ lastName: text })}
               onBlur={() => this.inputValidator()}
@@ -88,7 +123,7 @@ export default class Register extends Component {
             <Input
               full
               minLength={7}
-              label="Nickname(Optionl)"
+              label="Nickname(Optional)"
               style={{ marginBottom: 17 }}
               onChangeText={(text) => this.setState({ nickname: text })}
               onBlur={() => this.inputValidator()}
@@ -97,28 +132,28 @@ export default class Register extends Component {
             <Input
               full
               keyboardType='numeric'
-              label="Age"
+              label="Age*"
               style={{ marginBottom: 17 }}
               onChangeText={(text) => this.setState({ age: text })}
               onBlur={() => this.inputValidator()}
             />
             <Input
               full
-              label="Gender"
+              label="Gender*"
               style={{ marginBottom: 17 }}
               onChangeText={(text) => this.setState({ gender: text} )}
               onBlur={() => this.inputValidator()}
             />
             <Input
               full
-              label="Country"
+              label="Country*"
               style={{ marginBottom: 17 }}
               onChangeText={(text) => this.setState({ country: text })}
               onBlur={() => this.inputValidator()}
             />
             <Input
               full
-              label="Address"
+              label="Address*"
               style={{ marginBottom: 17 }}
               onChangeText={(text) => this.setState({ address: text })}
               onBlur={() => this.inputValidator()}
